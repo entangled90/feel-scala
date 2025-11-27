@@ -274,6 +274,17 @@ class FeelInterpreter(private val valueMapper: ValueMapper) {
               f => invokeFunction(f, params)
             )
         )
+      case FunctionExpressionInvocation(functionExpr, params) =>
+        eval(functionExpr) match {
+          case f: ValFunction => invokeFunction(f, params)
+          case ValNull        => ValNull
+          case other          =>
+            error(
+              EvaluationFailureType.FUNCTION_INVOCATION_FAILURE,
+              s"Expected a function but found '$other'"
+            )
+            ValNull
+        }
       case FunctionDefinition(params, body)                =>
         ValFunction(
           params,
@@ -864,11 +875,14 @@ class FeelInterpreter(private val valueMapper: ValueMapper) {
     }
   }
 
-  private def filterContext(x: Val)(implicit context: EvalContext): EvalContext =
+  private def filterContext(x: Val)(implicit context: EvalContext): EvalContext = {
+    // Add both "item" and the implicit input variable for unary test expressions
+    val inputVariableName = getInputVariableName
     x match {
-      case ValContext(ctx: Context) => context.add("item" -> x).merge(ctx)
-      case v                        => context.add("item" -> v)
+      case ValContext(ctx: Context) => context.add("item" -> x).add(inputVariableName -> x).merge(ctx)
+      case v                        => context.add("item" -> v).add(inputVariableName -> v)
     }
+  }
 
   private def ref(x: Val, names: List[String])(implicit context: EvalContext): Val =
     names match {

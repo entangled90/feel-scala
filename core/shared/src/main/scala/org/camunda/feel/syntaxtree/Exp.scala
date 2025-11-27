@@ -121,6 +121,9 @@ case class JavaFunctionInvocation(className: String, methodName: String, argumen
 case class QualifiedFunctionInvocation(path: Exp, function: String, params: FunctionParameters)
     extends Exp
 
+// Invocation of a function expression (e.g., (function(x,y) x + y)(1, 2))
+case class FunctionExpressionInvocation(functionExpr: Exp, params: FunctionParameters) extends Exp
+
 case class FunctionDefinition(parameters: List[String], body: Exp) extends Exp
 
 case class If(condition: Exp, statement: Exp, elseStatement: Exp) extends Exp

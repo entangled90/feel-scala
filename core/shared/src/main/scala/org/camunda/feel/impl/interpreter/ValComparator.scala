@@ -44,6 +44,9 @@ class ValComparator(private val valueMapper: ValueMapper) {
     case (ValDayTimeDuration(x), ValDayTimeDuration(y))     => ValBoolean(x == y)
     case (ValList(x), ValList(y))                           => compare(x, y)
     case (ValContext(x), ValContext(y))                     => compare(x, y)
+    // feelin compatibility: compare single-element list with scalar
+    case (ValList(List(single)), scalar)                    => compare(single, scalar)
+    case (scalar, ValList(List(single)))                    => compare(scalar, single)
     // values have a different type
     case _                                                  => ValError(s"Can't compare '$x' with '$y'")
   }
