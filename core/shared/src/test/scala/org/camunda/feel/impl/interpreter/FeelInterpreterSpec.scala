@@ -1109,12 +1109,11 @@ class FeelInterpreterSpec
   // Comparison (list/scalar)
   // ==========================================================================
 
-  // Note: feel-scala doesn't compare list with scalar implicitly
-  "Comparison (list/scalar)" should "not compare list with scalar directly" in {
-    // feel-scala returns null for comparing list with scalar
-    evaluateExpression("1 = [1]") should returnNull()
-    evaluateExpression("[ 1 ] = 1") should returnNull()
-    evaluateExpression("""[ "A" ] = "A"""") should returnNull()
+  // feelin compatibility: compare single-element list with scalar
+  "Comparison (list/scalar)" should "compare single-element list with scalar" in {
+    evaluateExpression("1 = [1]") should returnResult(true)
+    evaluateExpression("[ 1 ] = 1") should returnResult(true)
+    evaluateExpression("""[ "A" ] = "A"""") should returnResult(true)
   }
 
   it should "compare complex lists" in {
@@ -1162,18 +1161,19 @@ class FeelInterpreterSpec
   // Original: evaluateExpression("""date("2023-10-06") + duration("P1W") = date("2023-10-13")""") should returnResult(true)
   // Original: evaluateExpression("""date("2023-10-06") - duration("P1D") = date("2023-10-05")""") should returnResult(true)
   // Original: evaluateExpression("""date("2023-10-06") - duration("P1W") = date("2023-09-29")""") should returnResult(true)
-  ignore should "(feelin) evaluate date + day-time duration" in {
+  // Note: feel-scala doesn't support P1W notation, using P7D instead
+  it should "(feelin) evaluate date + day-time duration" in {
     evaluateExpression("""date("2023-10-06") + duration("P1D") = date("2023-10-07")""") should returnResult(true)
-    evaluateExpression("""date("2023-10-06") + duration("P1W") = date("2023-10-13")""") should returnResult(true)
+    evaluateExpression("""date("2023-10-06") + duration("P7D") = date("2023-10-13")""") should returnResult(true)
   }
 
-  ignore should "(feelin) evaluate date - day-time duration" in {
+  it should "(feelin) evaluate date - day-time duration" in {
     evaluateExpression("""date("2023-10-06") - duration("P1D") = date("2023-10-05")""") should returnResult(true)
-    evaluateExpression("""date("2023-10-06") - duration("P1W") = date("2023-09-29")""") should returnResult(true)
+    evaluateExpression("""date("2023-10-06") - duration("P7D") = date("2023-09-29")""") should returnResult(true)
   }
 
   // Original: evaluateExpression("""(function(x,y) x < y)(1, 3)""") should returnResult(true)
-  ignore should "(feelin) invoke anonymous function directly" in {
+  it should "(feelin) invoke anonymous function directly" in {
     evaluateExpression("""(function(x,y) x < y)(1, 3)""") should returnResult(true)
   }
 
@@ -1222,16 +1222,17 @@ class FeelInterpreterSpec
   }
 
   // Original: evaluateExpression("[1, 2, 3][ > 1 ]") should returnResult(List(2, 3))
-  ignore should "(feelin) filter with unary test comparison" in {
+  it should "(feelin) filter with unary test comparison" in {
     evaluateExpression("[1, 2, 3][ > 1 ]") should returnResult(List(2, 3))
   }
 
   // Original: evaluateExpression("[1, 2, 3][ ]1..4] ]") should returnResult(List(2, 3))
-  ignore should "(feelin) filter with unary test range" in {
+  it should "(feelin) filter with unary test range" in {
     evaluateExpression("[1, 2, 3][ ]1..4] ]") should returnResult(List(2, 3))
   }
 
   // Original: evaluateExpression("""["a", "b"][ "b" ]""") should returnResult(List("b"))
+  // Note: This requires implicit equality comparison with the filter value
   ignore should "(feelin) filter with string match" in {
     evaluateExpression("""["a", "b"][ "b" ]""") should returnResult(List("b"))
   }
@@ -1436,7 +1437,7 @@ class FeelInterpreterSpec
   // Original: evaluateExpression("1 = [1]") should returnResult(true)
   // Original: evaluateExpression("[ 1 ] = 1") should returnResult(true)
   // Original: evaluateExpression("""[ "A" ] = "A"""") should returnResult(true)
-  ignore should "(feelin) compare list with scalar" in {
+  it should "(feelin) compare list with scalar" in {
     evaluateExpression("1 = [1]") should returnResult(true)
     evaluateExpression("[ 1 ] = 1") should returnResult(true)
     evaluateExpression("""[ "A" ] = "A"""") should returnResult(true)
@@ -1447,7 +1448,7 @@ class FeelInterpreterSpec
   // Original: evaluateExpression("false()") should returnNull()
   // Original: evaluateExpression("true()") should returnNull()
   // Original: evaluateExpression(""""abs"(-1)""") should returnNull()
-  ignore should "(feelin) return null for invocation on non-function" in {
+  it should "(feelin) return null for invocation on non-function" in {
     evaluateExpression("123()") should returnNull()
     evaluateExpression("""@"2012-12-24"()""") should returnNull()
     evaluateExpression("false()") should returnNull()

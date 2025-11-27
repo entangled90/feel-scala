@@ -64,6 +64,7 @@ import org.camunda.feel.syntaxtree.{
   Filter,
   For,
   FunctionDefinition,
+  FunctionExpressionInvocation,
   FunctionInvocation,
   FunctionParameters,
   GreaterOrEqual,
@@ -540,9 +541,9 @@ object FeelParser {
       (range | expression).rep(1, sep = ",")
     ).map(params => PositionalFunctionParameters(params.toList))
 
-  // operators of values that can be chained multiple times (e.g. `a.b.c`, `a[1][2]`, `a.b[1].c`)
+  // operators of values that can be chained multiple times (e.g. `a.b.c`, `a[1][2]`, `a.b[1].c`, `(function(x) x)(1)`)
   private def chainedValueOp[_: P](value: Exp): P[Exp] =
-    (path(value) | filter(value)).flatMap(optional(chainedValueOp(_)))
+    (path(value) | filter(value) | functionExpressionInvocation(value)).flatMap(optional(chainedValueOp(_)))
 
   private def path[_: P](value: Exp): P[Exp] =
     P(
@@ -560,6 +561,19 @@ object FeelParser {
     P(
       ("[" ~ expression ~ "]").rep(1)
     ).map(ops => ops.foldLeft(base)(Filter))
+
+  // Invocation of a function expression (e.g., (function(x,y) x + y)(1, 2))
+  private def functionExpressionInvocation[_: P](functionExpr: Exp): P[Exp] =
+    P(
+      ("(" ~ functionParameters.? ~ ")").rep(1)
+    ).map(ops =>
+      ops.foldLeft(functionExpr)((expr, params) =>
+        FunctionExpressionInvocation(
+          expr,
+          params.getOrElse(PositionalFunctionParameters(List.empty))
+        )
+      )
+    )
 
   // --------------- unary-tests expressions ---------------
 
