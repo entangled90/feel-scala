@@ -245,7 +245,7 @@ class FeelInterpreter(private val valueMapper: ValueMapper) {
         )
 
       // functions
-      case FunctionInvocation(name, params)                =>
+      case FunctionInvocation(name, params)                   =>
         withValOrNull(
           withFunction(
             findFunction(context, name, params),
@@ -265,7 +265,7 @@ class FeelInterpreter(private val valueMapper: ValueMapper) {
               }
           )
         )
-      case QualifiedFunctionInvocation(path, name, params) =>
+      case QualifiedFunctionInvocation(path, name, params)    =>
         withContext(
           eval(path),
           c =>
@@ -285,13 +285,13 @@ class FeelInterpreter(private val valueMapper: ValueMapper) {
             )
             ValNull
         }
-      case FunctionDefinition(params, body)                =>
+      case FunctionDefinition(params, body)                   =>
         ValFunction(
           params,
           paramValues =>
             body match {
               case JavaFunctionInvocation(className, methodName, arguments) =>
-                try{
+                try {
                   JavaFunctionInvoker.invokeJavaFunction(
                     className,
                     methodName,
@@ -879,7 +879,8 @@ class FeelInterpreter(private val valueMapper: ValueMapper) {
     // Add both "item" and the implicit input variable for unary test expressions
     val inputVariableName = getInputVariableName
     x match {
-      case ValContext(ctx: Context) => context.add("item" -> x).add(inputVariableName -> x).merge(ctx)
+      case ValContext(ctx: Context) =>
+        context.add("item" -> x).add(inputVariableName -> x).merge(ctx)
       case v                        => context.add("item" -> v).add(inputVariableName -> v)
     }
   }
@@ -928,7 +929,6 @@ class FeelInterpreter(private val valueMapper: ValueMapper) {
           ValNull
         }
     }
-
 
   private def toRange(range: ConstRange)(implicit context: EvalContext): Val = {
     withValues(

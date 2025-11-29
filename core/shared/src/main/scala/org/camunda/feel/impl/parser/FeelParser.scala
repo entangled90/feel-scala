@@ -543,7 +543,8 @@ object FeelParser {
 
   // operators of values that can be chained multiple times (e.g. `a.b.c`, `a[1][2]`, `a.b[1].c`, `(function(x) x)(1)`)
   private def chainedValueOp[_: P](value: Exp): P[Exp] =
-    (path(value) | filter(value) | functionExpressionInvocation(value)).flatMap(optional(chainedValueOp(_)))
+    (path(value) | filter(value) | functionExpressionInvocation(value))
+      .flatMap(optional(chainedValueOp(_)))
 
   private def path[_: P](value: Exp): P[Exp] =
     P(
@@ -713,14 +714,14 @@ object FeelParser {
     // Strategy: first protect escaped backslashes, then replace escapes, then restore.
     val placeholder = "\u0000BACKSLASH\u0000" // unlikely to appear in input
     input
-      .replace("\\\\", placeholder)           // protect escaped backslashes
-      .replace("\\n", "\n")                   // new line
-      .replace("\\r", "\r")                   // carriage return
-      .replace("\\t", "\t")                   // tab
-      .replace("\\b", "\b")                   // backspace
-      .replace("\\f", "\f")                   // form feed
-      .replace("\\'", "'")                    // single quote
-      .replace("\\\"", "\"")                  // double quote
-      .replace(placeholder, "\\")             // restore backslashes
+      .replace("\\\\", placeholder) // protect escaped backslashes
+      .replace("\\n", "\n")         // new line
+      .replace("\\r", "\r")         // carriage return
+      .replace("\\t", "\t")         // tab
+      .replace("\\b", "\b")         // backspace
+      .replace("\\f", "\f")         // form feed
+      .replace("\\'", "'")          // single quote
+      .replace("\\\"", "\"")        // double quote
+      .replace(placeholder, "\\")   // restore backslashes
   }
 }

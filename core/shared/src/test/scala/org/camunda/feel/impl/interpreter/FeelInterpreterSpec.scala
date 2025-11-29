@@ -23,9 +23,9 @@ import org.scalatest.matchers.should.Matchers
 import java.time.{Duration, Period}
 
 /** Comprehensive FEEL interpreter specification tests.
-  * 
-  * These tests are derived from the feelin JavaScript FEEL implementation test suite
-  * to ensure compatibility and comprehensive coverage of the FEEL specification.
+  *
+  * These tests are derived from the feelin JavaScript FEEL implementation test suite to ensure
+  * compatibility and comprehensive coverage of the FEEL specification.
   */
 class FeelInterpreterSpec
     extends AnyFlatSpec
@@ -136,11 +136,15 @@ class FeelInterpreterSpec
 
   // Temporal arithmetic
   "Temporal arithmetic" should """evaluate time("23:59:00") + duration("PT2M") = time("00:01")""" in {
-    evaluateExpression("""time("23:59:00") + duration("PT2M") = time("00:01")""") should returnResult(true)
+    evaluateExpression(
+      """time("23:59:00") + duration("PT2M") = time("00:01")"""
+    ) should returnResult(true)
   }
 
   it should """evaluate time("00:01") - duration("PT2M") = time("23:59:00")""" in {
-    evaluateExpression("""time("00:01") - duration("PT2M") = time("23:59:00")""") should returnResult(true)
+    evaluateExpression(
+      """time("00:01") - duration("PT2M") = time("23:59:00")"""
+    ) should returnResult(true)
   }
 
   it should "return null for date + date" in {
@@ -148,37 +152,57 @@ class FeelInterpreterSpec
   }
 
   it should """evaluate date("2012-12-25") - date("2012-12-24") = duration("P1D")""" in {
-    evaluateExpression("""date("2012-12-25") - date("2012-12-24") = duration("P1D")""") should returnResult(true)
+    evaluateExpression(
+      """date("2012-12-25") - date("2012-12-24") = duration("P1D")"""
+    ) should returnResult(true)
   }
 
   it should "return null for date and time + date and time" in {
-    evaluateExpression("""date and time("2012-12-24T23:59:00") + date and time("2012-12-25T00:00:00")""") should returnNull()
+    evaluateExpression(
+      """date and time("2012-12-24T23:59:00") + date and time("2012-12-25T00:00:00")"""
+    ) should returnNull()
   }
 
   it should """evaluate date and time + duration""" in {
-    evaluateExpression("""date and time("2012-12-24T23:59:00") + duration("PT1M") = date and time("2012-12-25T00:00:00")""") should returnResult(true)
+    evaluateExpression(
+      """date and time("2012-12-24T23:59:00") + duration("PT1M") = date and time("2012-12-25T00:00:00")"""
+    ) should returnResult(true)
   }
 
   it should """evaluate date and time - duration""" in {
-    evaluateExpression("""date and time("2012-12-25T00:00:00") - duration("PT1M") = date and time("2012-12-24T23:59:00")""") should returnResult(true)
+    evaluateExpression(
+      """date and time("2012-12-25T00:00:00") - duration("PT1M") = date and time("2012-12-24T23:59:00")"""
+    ) should returnResult(true)
   }
 
   it should """evaluate duration("P1D") + duration("P1D")""" in {
-    evaluateExpression("""duration("P1D") + duration("P1D")""") should returnResult(Duration.parse("P2D"))
+    evaluateExpression("""duration("P1D") + duration("P1D")""") should returnResult(
+      Duration.parse("P2D")
+    )
   }
 
   it should """evaluate duration("PT1M") + duration("PT1M")""" in {
-    evaluateExpression("""duration("PT1M") + duration("PT1M")""") should returnResult(Duration.parse("PT2M"))
+    evaluateExpression("""duration("PT1M") + duration("PT1M")""") should returnResult(
+      Duration.parse("PT2M")
+    )
   }
 
   it should """evaluate date + years-months duration""" in {
-    evaluateExpression("""date("2023-10-06") + duration("P1M") = date("2023-11-06")""") should returnResult(true)
-    evaluateExpression("""date("2023-10-06") + duration("P1Y") = date("2024-10-06")""") should returnResult(true)
+    evaluateExpression(
+      """date("2023-10-06") + duration("P1M") = date("2023-11-06")"""
+    ) should returnResult(true)
+    evaluateExpression(
+      """date("2023-10-06") + duration("P1Y") = date("2024-10-06")"""
+    ) should returnResult(true)
   }
 
   it should """evaluate date - years-months duration""" in {
-    evaluateExpression("""date("2023-10-06") - duration("P1M") = date("2023-09-06")""") should returnResult(true)
-    evaluateExpression("""date("2023-10-06") - duration("P1Y") = date("2022-10-06")""") should returnResult(true)
+    evaluateExpression(
+      """date("2023-10-06") - duration("P1M") = date("2023-09-06")"""
+    ) should returnResult(true)
+    evaluateExpression(
+      """date("2023-10-06") - duration("P1Y") = date("2022-10-06")"""
+    ) should returnResult(true)
   }
 
   // Note: feel-scala may not support date + day-time duration (P1D)
@@ -243,11 +267,15 @@ class FeelInterpreterSpec
   }
 
   it should "support nested range iterations" in {
-    evaluateExpression("for a in 1 .. 2, b in 1 .. 2 return a * 10 + b") should returnResult(List(11, 12, 21, 22))
+    evaluateExpression("for a in 1 .. 2, b in 1 .. 2 return a * 10 + b") should returnResult(
+      List(11, 12, 21, 22)
+    )
   }
 
   it should "access partial results" in {
-    evaluateExpression("for i in 0..4 return if i = 0 then 1 else i * partial[-1]") should returnResult(List(1, 1, 2, 6, 24))
+    evaluateExpression(
+      "for i in 0..4 return if i = 0 then 1 else i * partial[-1]"
+    ) should returnResult(List(1, 1, 2, 6, 24))
   }
 
   it should "access context variables in iteration" in {
@@ -460,9 +488,15 @@ class FeelInterpreterSpec
 
   // Note: feel-scala years-months durations (P3Y) can't be compared to mixed durations (P4Y1D)
   it should "compare years-months durations in range" in {
-    evaluateExpression("""duration("P3Y") in [duration("P2Y")..duration("P4Y")]""") should returnResult(true)
-    evaluateExpression("""duration("P2Y") in [duration("P2Y")..duration("P4Y")]""") should returnResult(true)
-    evaluateExpression("""duration("P4Y") in [duration("P2Y")..duration("P4Y")]""") should returnResult(true)
+    evaluateExpression(
+      """duration("P3Y") in [duration("P2Y")..duration("P4Y")]"""
+    ) should returnResult(true)
+    evaluateExpression(
+      """duration("P2Y") in [duration("P2Y")..duration("P4Y")]"""
+    ) should returnResult(true)
+    evaluateExpression(
+      """duration("P4Y") in [duration("P2Y")..duration("P4Y")]"""
+    ) should returnResult(true)
   }
 
   // ==========================================================================
@@ -581,7 +615,9 @@ class FeelInterpreterSpec
   }
 
   it should "return null for missing properties in list" in {
-    evaluateExpression("""[ { x: 1, y: null }, { x: 2 }, { y: 1 } ].y""") should returnResult(List(null, null, 1))
+    evaluateExpression("""[ { x: 1, y: null }, { x: 2 }, { y: 1 } ].y""") should returnResult(
+      List(null, null, 1)
+    )
   }
 
   it should "return null for path on null" in {
@@ -673,20 +709,30 @@ class FeelInterpreterSpec
   }
 
   it should "filter contexts by property" in {
-    evaluateExpression("""[ {x:1, y:2}, {x:2, y:3} ][x=1]""") should returnResult(List(Map("x" -> 1, "y" -> 2)))
+    evaluateExpression("""[ {x:1, y:2}, {x:2, y:3} ][x=1]""") should returnResult(
+      List(Map("x" -> 1, "y" -> 2))
+    )
   }
 
   it should "filter with item.property" in {
-    evaluateExpression("[{a: 1}, {a: 2}, {a: 3}][item.a >= 2]") should returnResult(List(Map("a" -> 2), Map("a" -> 3)))
-    evaluateExpression("[{a: 1}, {a: 2}, {a: 3}][a >= 2]") should returnResult(List(Map("a" -> 2), Map("a" -> 3)))
+    evaluateExpression("[{a: 1}, {a: 2}, {a: 3}][item.a >= 2]") should returnResult(
+      List(Map("a" -> 2), Map("a" -> 3))
+    )
+    evaluateExpression("[{a: 1}, {a: 2}, {a: 3}][a >= 2]") should returnResult(
+      List(Map("a" -> 2), Map("a" -> 3))
+    )
   }
 
   it should "handle item shadowing" in {
-    evaluateExpression("[{item: 1}, {item: 2}, {item: 3}][item >= 2]") should returnResult(List(Map("item" -> 2), Map("item" -> 3)))
+    evaluateExpression("[{item: 1}, {item: 2}, {item: 3}][item >= 2]") should returnResult(
+      List(Map("item" -> 2), Map("item" -> 3))
+    )
   }
 
   it should "filter with null values" in {
-    evaluateExpression("[ { x: 1, y: 2 }, { x: null, y: 3 } ][ x < 2 ]") should returnResult(List(Map("x" -> 1, "y" -> 2)))
+    evaluateExpression("[ { x: 1, y: 2 }, { x: null, y: 3 } ][ x < 2 ]") should returnResult(
+      List(Map("x" -> 1, "y" -> 2))
+    )
   }
 
   it should "return null for filter on null variable" in {
@@ -700,8 +746,12 @@ class FeelInterpreterSpec
   }
 
   it should "handle index from expression" in {
-    evaluateExpression("""["A", "B", "C"][a + b]""", Map("a" -> 1, "b" -> 1)) should returnResult("B")
-    evaluateExpression("""["A", "B", "C"][a - b]""", Map("a" -> 3, "b" -> 1)) should returnResult("B")
+    evaluateExpression("""["A", "B", "C"][a + b]""", Map("a" -> 1, "b" -> 1)) should returnResult(
+      "B"
+    )
+    evaluateExpression("""["A", "B", "C"][a - b]""", Map("a" -> 3, "b" -> 1)) should returnResult(
+      "B"
+    )
   }
 
   // ==========================================================================
@@ -766,7 +816,9 @@ class FeelInterpreterSpec
   // ==========================================================================
 
   "Context" should "project from nested list" in {
-    evaluateExpression("""{ a: [ { b: 1 }, { b: 2 } ].b }""") should returnResult(Map("a" -> List(1, 2)))
+    evaluateExpression("""{ a: [ { b: 1 }, { b: 2 } ].b }""") should returnResult(
+      Map("a" -> List(1, 2))
+    )
   }
 
   it should "handle unicode keys" in {
@@ -774,7 +826,9 @@ class FeelInterpreterSpec
   }
 
   it should "handle special characters in quoted keys" in {
-    evaluateExpression("""{ "foo+bar((!!],foo": 10 }""") should returnResult(Map("foo+bar((!!],foo" -> 10))
+    evaluateExpression("""{ "foo+bar((!!],foo": 10 }""") should returnResult(
+      Map("foo+bar((!!],foo" -> 10)
+    )
   }
 
   it should "handle empty string key" in {
@@ -1058,7 +1112,9 @@ class FeelInterpreterSpec
 
   it should "compare contexts" in {
     evaluateExpression("{} = {}") should returnResult(true)
-    evaluateExpression("""{foo: "bar", bar: "baz"} = {foo: "bar", bar: "baz"}""") should returnResult(true)
+    evaluateExpression(
+      """{foo: "bar", bar: "baz"} = {foo: "bar", bar: "baz"}"""
+    ) should returnResult(true)
     evaluateExpression("""{foo: "bar"} = {"foo": "bar"}""") should returnResult(true)
     evaluateExpression("{} = null") should returnResult(false)
     evaluateExpression("{} = []") should returnNull()
@@ -1066,16 +1122,22 @@ class FeelInterpreterSpec
 
   it should "compare nested structures" in {
     evaluateExpression("[1,2,[3, 4]] = [1,2,[3, 4]]") should returnResult(true)
-    evaluateExpression("""{a: {c: "bar", b: "foo"}} = {a: {b: "foo", c: "bar"}}""") should returnResult(true)
+    evaluateExpression(
+      """{a: {c: "bar", b: "foo"}} = {a: {b: "foo", c: "bar"}}"""
+    ) should returnResult(true)
   }
 
   it should "compare date and time" in {
-    evaluateExpression("""date and time("2012-12-24") = date and time("2012-12-24T00:00:00")""") should returnResult(true)
+    evaluateExpression(
+      """date and time("2012-12-24") = date and time("2012-12-24T00:00:00")"""
+    ) should returnResult(true)
   }
 
   it should "compare dates" in {
     evaluateExpression("""date("2018-12-08") = date("2018-12-08")""") should returnResult(true)
-    evaluateExpression("""date(year:2017,month:08,day:30) = date("2017-08-30")""") should returnResult(true)
+    evaluateExpression(
+      """date(year:2017,month:08,day:30) = date("2017-08-30")"""
+    ) should returnResult(true)
   }
 
   it should "compare times" in {
@@ -1117,7 +1179,9 @@ class FeelInterpreterSpec
   }
 
   it should "compare complex lists" in {
-    evaluateExpression("""[ 1, 2, { foo: "FOO" } ] = [ 1, 2, { foo: "FOO" } ]""") should returnResult(true)
+    evaluateExpression(
+      """[ 1, 2, { foo: "FOO" } ] = [ 1, 2, { foo: "FOO" } ]"""
+    ) should returnResult(true)
   }
 
   it should "handle null in comparison" in {
@@ -1163,13 +1227,21 @@ class FeelInterpreterSpec
   // Original: evaluateExpression("""date("2023-10-06") - duration("P1W") = date("2023-09-29")""") should returnResult(true)
   // Note: feel-scala doesn't support P1W notation, using P7D instead
   it should "(feelin) evaluate date + day-time duration" in {
-    evaluateExpression("""date("2023-10-06") + duration("P1D") = date("2023-10-07")""") should returnResult(true)
-    evaluateExpression("""date("2023-10-06") + duration("P7D") = date("2023-10-13")""") should returnResult(true)
+    evaluateExpression(
+      """date("2023-10-06") + duration("P1D") = date("2023-10-07")"""
+    ) should returnResult(true)
+    evaluateExpression(
+      """date("2023-10-06") + duration("P7D") = date("2023-10-13")"""
+    ) should returnResult(true)
   }
 
   it should "(feelin) evaluate date - day-time duration" in {
-    evaluateExpression("""date("2023-10-06") - duration("P1D") = date("2023-10-05")""") should returnResult(true)
-    evaluateExpression("""date("2023-10-06") - duration("P7D") = date("2023-09-29")""") should returnResult(true)
+    evaluateExpression(
+      """date("2023-10-06") - duration("P1D") = date("2023-10-05")"""
+    ) should returnResult(true)
+    evaluateExpression(
+      """date("2023-10-06") - duration("P7D") = date("2023-09-29")"""
+    ) should returnResult(true)
   }
 
   // Original: evaluateExpression("""(function(x,y) x < y)(1, 3)""") should returnResult(true)
@@ -1179,7 +1251,9 @@ class FeelInterpreterSpec
 
   // Original: evaluateExpression("for x in [ [1,2], [3,4] ], y in x return y") should returnResult(List(1, 2, 3, 4))
   ignore should "(feelin) flatten nested list iterations" in {
-    evaluateExpression("for x in [ [1,2], [3,4] ], y in x return y") should returnResult(List(1, 2, 3, 4))
+    evaluateExpression("for x in [ [1,2], [3,4] ], y in x return y") should returnResult(
+      List(1, 2, 3, 4)
+    )
   }
 
   // Original: evaluateExpression("for x in [ 1 ], y in [x + 1] return y") should returnResult(List(2))
@@ -1190,15 +1264,23 @@ class FeelInterpreterSpec
   // Original: evaluateExpression("every x in [ [1, 2], [3, 4] ], y in x satisfies y < 5") should returnResult(true)
   // Original: evaluateExpression("every x in [ [1, 2], [3, 4] ], y in x satisfies y > 3") should returnResult(false)
   ignore should "(feelin) support nested list iterations in every" in {
-    evaluateExpression("every x in [ [1, 2], [3, 4] ], y in x satisfies y < 5") should returnResult(true)
-    evaluateExpression("every x in [ [1, 2], [3, 4] ], y in x satisfies y > 3") should returnResult(false)
+    evaluateExpression("every x in [ [1, 2], [3, 4] ], y in x satisfies y < 5") should returnResult(
+      true
+    )
+    evaluateExpression("every x in [ [1, 2], [3, 4] ], y in x satisfies y > 3") should returnResult(
+      false
+    )
   }
 
   // Original: evaluateExpression("some x in [ [1, 2], [3, 4] ], y in x satisfies y > 5") should returnResult(false)
   // Original: evaluateExpression("some x in [ [1, 2], [3, 4] ], y in x satisfies y > 3") should returnResult(true)
   ignore should "(feelin) support nested list iterations in some" in {
-    evaluateExpression("some x in [ [1, 2], [3, 4] ], y in x satisfies y > 5") should returnResult(false)
-    evaluateExpression("some x in [ [1, 2], [3, 4] ], y in x satisfies y > 3") should returnResult(true)
+    evaluateExpression("some x in [ [1, 2], [3, 4] ], y in x satisfies y > 5") should returnResult(
+      false
+    )
+    evaluateExpression("some x in [ [1, 2], [3, 4] ], y in x satisfies y > 3") should returnResult(
+      true
+    )
   }
 
   // Original: evaluateExpression("1 between 5 and -1") should returnResult(true)
@@ -1218,7 +1300,9 @@ class FeelInterpreterSpec
 
   // Original: evaluateExpression("""duration("P4Y1D") in [duration("P2Y")..duration("P4Y")]""") should returnResult(false)
   ignore should "(feelin) compare mixed durations in range" in {
-    evaluateExpression("""duration("P4Y1D") in [duration("P2Y")..duration("P4Y")]""") should returnResult(false)
+    evaluateExpression(
+      """duration("P4Y1D") in [duration("P2Y")..duration("P4Y")]"""
+    ) should returnResult(false)
   }
 
   // Original: evaluateExpression("[1, 2, 3][ > 1 ]") should returnResult(List(2, 3))
@@ -1414,8 +1498,12 @@ class FeelInterpreterSpec
   // Original: evaluateExpression("(>= 5) = [5 .. null_value]", Map("null_value" -> null)) should returnResult(true)
   // Original: evaluateExpression("(5..10) = ]5 .. 10[") should returnResult(true)
   ignore should "(feelin) compare ranges" in {
-    evaluateExpression("(> 5) = (5 .. null_value]", Map("null_value" -> null)) should returnResult(true)
-    evaluateExpression("(>= 5) = [5 .. null_value]", Map("null_value" -> null)) should returnResult(true)
+    evaluateExpression("(> 5) = (5 .. null_value]", Map("null_value" -> null)) should returnResult(
+      true
+    )
+    evaluateExpression("(>= 5) = [5 .. null_value]", Map("null_value" -> null)) should returnResult(
+      true
+    )
     evaluateExpression("(5..10) = ]5 .. 10[") should returnResult(true)
   }
 
