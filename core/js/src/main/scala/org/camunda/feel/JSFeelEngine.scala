@@ -18,8 +18,7 @@ class JSFeelEngine() {
 
   private val valueMapper = new JSValueMapper()
   private val engine      = new FeelEngine(valueMapper = valueMapper)
-
-  private val api = new FeelEngineApi(engine)
+  private val api         = new FeelEngineApi(engine)
 
   def evaluate(expression: String, context: js.Dynamic): EvaluationResult = {
     val ctx = ObjectContext(context)
