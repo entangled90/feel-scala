@@ -19,9 +19,11 @@ package org.camunda.feel.api
 import org.camunda.feel.FeelEngine.Failure
 
 import scala.jdk.CollectionConverters.SeqHasAsJava
+import scala.scalajs.js.annotation.JSExportTopLevel
 
 /** The result of an expression evaluation.
   */
+
 sealed trait EvaluationResult {
 
   /** The result value of the evaluation.
