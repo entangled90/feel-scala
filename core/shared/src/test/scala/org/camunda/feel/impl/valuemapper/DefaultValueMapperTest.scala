@@ -185,13 +185,13 @@ class DefaultValueMapperTest extends AnyFlatSpec with Matchers {
     ) should be(ValDateTime("2017-04-02T12:04:30@Europe/Paris"))
   }
 
-//  it should "convert from java.util.Date" in {
-//
-//    val format   = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-//    val dateTime = LocalDateTime.parse("2017-04-02T12:04:30")
-//
-//    valueMapper.toVal(format.parse("2017-04-02T12:04:30")) should be(ValLocalDateTime(dateTime))
-//  }
+  it should "convert from java.util.Date" in {
+
+    val format   = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+    val dateTime = LocalDateTime.parse("2017-04-02T12:04:30")
+
+    valueMapper.toVal(format.parse("2017-04-02T12:04:30")) should be(ValLocalDateTime(dateTime))
+  }
 
   it should "convert from Period" in {
 
