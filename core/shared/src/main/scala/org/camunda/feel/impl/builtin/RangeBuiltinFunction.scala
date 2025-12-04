@@ -32,9 +32,10 @@ import org.camunda.feel.syntaxtree.{
 }
 
 import scala.annotation.tailrec
+import org.camunda.feel.syntaxtree.ValFunction
 
 object RangeBuiltinFunction {
-  def functions = Map(
+  def functions: Map[String, List[ValFunction]] = Map(
     "before"          -> List(
       beforeFunction("point1", "point2"),
       beforeFunction("point", "range"),

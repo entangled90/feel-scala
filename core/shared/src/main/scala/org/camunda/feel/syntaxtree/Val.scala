@@ -151,7 +151,7 @@ case class ValTime(value: Time) extends Val {
     "second"      -> ValNumber(value.getSecond),
     "time offset" ->
       ValDayTimeDuration(Duration.ofSeconds(value.getOffsetInTotalSeconds)),
-    "timezone"    -> value.getZoneId.map(ValString).getOrElse(ValNull)
+    "timezone"    -> value.getZoneId.map(ValString.apply).getOrElse(ValNull)
   )
 
   override def toString: String = value.format
@@ -231,8 +231,8 @@ object ValYearMonthDuration {
   }
 
   private def mkString(year: Long, month: Long): String = {
-    val y = Option(year).filterNot(_ == 0).map(_ + "Y").getOrElse("")
-    val m = Option(month).filterNot(_ == 0).map(_ + "M").getOrElse("")
+    val y = Option(year).filterNot(_ == 0).map("" + (_) + "Y").getOrElse("")
+    val m = Option(month).filterNot(_ == 0).map("" + (_) + "M").getOrElse("")
 
     val stringValue = new StringBuilder("P")
     stringValue.append(y).append(m)
@@ -269,10 +269,10 @@ object ValDayTimeDuration {
   }
 
   private def mkString(day: Long, hour: Long, minute: Long, second: Long): String = {
-    val d = Option(day).filterNot(_ == 0).map(_ + "D").getOrElse("")
-    val h = Option(hour).filterNot(_ == 0).map(_ + "H").getOrElse("")
-    val m = Option(minute).filterNot(_ == 0).map(_ + "M").getOrElse("")
-    val s = Option(second).filterNot(_ == 0).map(_ + "S").getOrElse("")
+    val d = Option(day).filterNot(_ == 0).map("" + (_) + "D").getOrElse("")
+    val h = Option(hour).filterNot(_ == 0).map("" + (_) + "H").getOrElse("")
+    val m = Option(minute).filterNot(_ == 0).map("" + (_) + "M").getOrElse("")
+    val s = Option(second).filterNot(_ == 0).map("" + (_) + "S").getOrElse("")
 
     val stringValue = new StringBuilder("P")
     stringValue.append(d)

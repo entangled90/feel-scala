@@ -22,19 +22,20 @@ import org.scalatest.matchers.should.Matchers
 
 import java.util.concurrent.{Executors, TimeUnit}
 import scala.concurrent.ExecutionContext
+import scala.concurrent.ExecutionContextExecutorService
 
 /** @author
   *   Victor Mosin
   */
 class InterpreterInterruptionTest extends AnyFlatSpec with Matchers with FeelEngineTest {
 
-  protected implicit val context =
+  protected implicit val context: ExecutionContextExecutorService =
     ExecutionContext.fromExecutorService(Executors.newSingleThreadExecutor())
 
   "A long-running evaluation invocation" should "be interrupted after X time" in {
     val countDownLatch = new java.util.concurrent.CountDownLatch(1)
     val thread         = new Thread {
-      override def run {
+      override def run = {
         try {
           evaluateExpression(
             expression = "count(for x in 1..(2 ** 16) return {\"power\": 2 ** x}) > 0"

@@ -36,11 +36,11 @@ class ExternalFunctionsConfigurationTest extends AnyFlatSpec with Matchers {
         call: f(-1)
         }.call"""
 
-  val parsedExternalFunctionInvocation = engineWithEnabledFunctions
+  val parsedExternalFunctionInvocation: ParsedExpression = engineWithEnabledFunctions
     .parseExpression(externalFunctionInvocation)
     .getOrElse(???)
 
-  val disabledExternalFunctionFailure = Failure(
+  val disabledExternalFunctionFailure: Failure = Failure(
     s"validation of expression '$externalFunctionInvocation' failed: " +
       "External functions are disabled. Use the FunctionProvider SPI (recommended) or enable external function in the configuration."
   )

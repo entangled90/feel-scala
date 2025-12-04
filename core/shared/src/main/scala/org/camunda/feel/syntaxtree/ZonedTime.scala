@@ -38,7 +38,7 @@ case class ZonedTime(time: LocalTime, offset: ZoneOffset, zone: Option[ZoneId]) 
 
   val hasTimeZone = zone.isDefined
 
-  val nanos = {
+  val nanos: Long = {
     val nod         = time.toNanoOfDay
     val offsetNanos = offset.getTotalSeconds() * NANOS_PER_SECOND
     nod - offsetNanos
@@ -116,7 +116,7 @@ object ZonedTime {
 
   val NANOS_PER_SECOND = 1000000000L
 
-  val offsetFormatter = new DateTimeFormatterBuilder()
+  val offsetFormatter: DateTimeFormatter = new DateTimeFormatterBuilder()
     .appendOffsetId()
     .toFormatter()
 

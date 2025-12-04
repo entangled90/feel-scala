@@ -25,7 +25,7 @@ object JavaClassMapper {
 
   val classLoader = getClass.getClassLoader
 
-  val stringClass = classOf[java.lang.String]
+  val stringClass: Class[String] = classOf[java.lang.String]
 
   def loadClass(className: String): Class[_] = className match {
     case "int"     => java.lang.Integer.TYPE

@@ -23,10 +23,11 @@ import org.camunda.feel.syntaxtree.{Val, ValContext, ValError, ValList, ValNull,
 import org.camunda.feel.valuemapper.ValueMapper
 
 import scala.annotation.tailrec
+import org.camunda.feel.syntaxtree.ValFunction
 
 class ContextBuiltinFunctions(valueMapper: ValueMapper) {
 
-  def functions = Map(
+  def functions: Map[String, List[ValFunction]] = Map(
     "get entries"   -> List(getEntriesFunction("context"), getEntriesFunction("m")),
     "get value"     -> List(
       getValueFunction(List("m", "key")),

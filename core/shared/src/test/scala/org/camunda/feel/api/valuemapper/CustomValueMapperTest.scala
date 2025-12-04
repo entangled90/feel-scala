@@ -42,7 +42,7 @@ class CustomValueMapperTest extends AnyFlatSpec with Matchers {
 
     object EN extends Language("EN")
 
-    def items = Seq(DE, EN)
+    def items: Seq[Language] = Seq(DE, EN)
   }
 
   case class Property[T](val name: String, var value: Option[T])
@@ -52,13 +52,13 @@ class CustomValueMapperTest extends AnyFlatSpec with Matchers {
   }
 
   class Person extends DomainObject {
-    val name       = Property[String]("name", None)
-    val language   = Property[Language]("language", None)
-    val properties = Map((name.name -> name), (language.name -> language))
+    val name: Property[String]               = Property[String]("name", None)
+    val language: Property[Language]         = Property[Language]("language", None)
+    val properties: Map[String, Property[?]] = Map((name.name -> name), (language.name -> language))
   }
 
   class MyCustomContext(val d: DomainObject) extends CustomContext {
-    override val variableProvider = new VariableProvider {
+    override val variableProvider: VariableProvider = new VariableProvider {
       override def getVariable(name: String): Option[Any] =
         d.properties.get(name).map(_.value)
 

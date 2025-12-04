@@ -30,6 +30,7 @@ import org.camunda.feel.syntaxtree.ZonedTime
 
 import java.time.format.{DateTimeFormatterBuilder, ResolverStyle, SignStyle}
 import java.time.{Duration, LocalDate, LocalDateTime, LocalTime, Period, ZonedDateTime}
+import java.time.format.DateTimeFormatter
 
 /** @author
   *   Philipp Ossler
@@ -123,7 +124,7 @@ package object feel {
   def isDayTimeDuration(duration: String): Boolean =
     dayTimeDurationPattern.matcher(duration).matches
 
-  val timeFormatterWithPrefix = new DateTimeFormatterBuilder()
+  val timeFormatterWithPrefix: DateTimeFormatter = new DateTimeFormatterBuilder()
     .appendLiteral('T')
     .appendValue(HOUR_OF_DAY, 2)
     .appendLiteral(':')
@@ -135,7 +136,7 @@ package object feel {
     .appendFraction(NANO_OF_SECOND, 0, 9, true)
     .toFormatter();
 
-  val timeFormatterWithOptionalPrefix = new DateTimeFormatterBuilder()
+  val timeFormatterWithOptionalPrefix: DateTimeFormatter = new DateTimeFormatterBuilder()
     .optionalStart()
     .appendLiteral('T')
     .optionalEnd()
@@ -149,7 +150,7 @@ package object feel {
     .appendFraction(NANO_OF_SECOND, 0, 9, true)
     .toFormatter();
 
-  val offsetFormatter = new DateTimeFormatterBuilder()
+  val offsetFormatter: DateTimeFormatter = new DateTimeFormatterBuilder()
     .optionalStart()
     .appendOffsetId()
     .optionalEnd()
@@ -164,12 +165,12 @@ package object feel {
     .optionalEnd()
     .toFormatter();
 
-  val timeFormatterWithOffsetAndOptionalPrefix = new DateTimeFormatterBuilder()
+  val timeFormatterWithOffsetAndOptionalPrefix: DateTimeFormatter = new DateTimeFormatterBuilder()
     .append(timeFormatterWithOptionalPrefix)
     .append(offsetFormatter)
     .toFormatter();
 
-  val localTimeFormatter = new DateTimeFormatterBuilder()
+  val localTimeFormatter: DateTimeFormatter = new DateTimeFormatterBuilder()
     .appendValue(HOUR_OF_DAY, 2)
     .appendLiteral(':')
     .appendValue(MINUTE_OF_HOUR, 2)
@@ -180,12 +181,12 @@ package object feel {
     .appendFraction(NANO_OF_SECOND, 0, 9, true)
     .toFormatter();
 
-  val timeFormatter = new DateTimeFormatterBuilder()
+  val timeFormatter: DateTimeFormatter = new DateTimeFormatterBuilder()
     .append(localTimeFormatter)
     .append(offsetFormatter)
     .toFormatter();
 
-  val dateFormatter = new DateTimeFormatterBuilder()
+  val dateFormatter: DateTimeFormatter = new DateTimeFormatterBuilder()
     .appendValue(YEAR, 4, 9, SignStyle.NORMAL)
     .appendLiteral("-")
     .appendValue(MONTH_OF_YEAR, 2)
@@ -194,27 +195,27 @@ package object feel {
     .toFormatter()
     .withResolverStyle(ResolverStyle.STRICT)
 
-  val localDateTimeFormatter = new DateTimeFormatterBuilder()
+  val localDateTimeFormatter: DateTimeFormatter = new DateTimeFormatterBuilder()
     .append(dateFormatter)
     .append(timeFormatterWithPrefix)
     .toFormatter()
     .withResolverStyle(ResolverStyle.STRICT)
 
-  val dateTimeFormatter = new DateTimeFormatterBuilder()
+  val dateTimeFormatter: DateTimeFormatter = new DateTimeFormatterBuilder()
     .append(dateFormatter)
     .append(timeFormatterWithPrefix)
     .append(offsetFormatter)
     .toFormatter()
     .withResolverStyle(ResolverStyle.STRICT)
 
-  val dateTimeFormatterWithOffset = new DateTimeFormatterBuilder()
+  val dateTimeFormatterWithOffset: DateTimeFormatter = new DateTimeFormatterBuilder()
     .append(dateFormatter)
     .append(timeFormatterWithPrefix)
     .appendOffsetId()
     .toFormatter()
     .withResolverStyle(ResolverStyle.STRICT)
 
-  val dateTimeFormatterWithZoneId = new DateTimeFormatterBuilder()
+  val dateTimeFormatterWithZoneId: DateTimeFormatter = new DateTimeFormatterBuilder()
     .append(dateFormatter)
     .append(timeFormatterWithPrefix)
     .appendLiteral("@")

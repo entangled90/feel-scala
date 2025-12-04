@@ -37,7 +37,7 @@ class ListBuiltinFunctions(private val valueMapper: ValueMapper) {
 
   private val valueComparator = new ValComparator(valueMapper)
 
-  def functions = Map(
+  def functions: Map[String, List[ValFunction]] = Map(
     "list contains"    -> List(listContainsFunction),
     "count"            -> List(countFunction),
     "min"              -> List(minFunction),
@@ -229,7 +229,7 @@ class ListBuiltinFunctions(private val valueMapper: ValueMapper) {
               .map(_._1)
               .sorted
 
-            ValList(modeElements.map(ValNumber).toSeq)
+            ValList(modeElements.map(ValNumber.apply).toSeq)
           }
         )
     },

@@ -23,8 +23,9 @@ import org.camunda.feel.valuemapper.ValueMapper.CompositeValueMapper
 import org.camunda.feel.valuemapper.{SimpleBooleanTestPojo, SimpleTestPojo}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.EitherValues
 
-class BuiltinValueMapperPojoInputTest extends AnyFlatSpec with Matchers {
+class BuiltinValueMapperPojoInputTest extends AnyFlatSpec with Matchers with EitherValues {
   val engine =
     new FeelEngine(null, CompositeValueMapper(List(new JavaValueMapper())))
 
@@ -37,7 +38,7 @@ class BuiltinValueMapperPojoInputTest extends AnyFlatSpec with Matchers {
         "foo.getMyString() = \"foo\"",
         context = Context.StaticContext(variables, null)
       )
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "read value from object getter with attribute notation" in {
@@ -46,7 +47,7 @@ class BuiltinValueMapperPojoInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("foo.myString = \"foo\"", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "read boolean 'true' from object 'is...' getter" in {
@@ -57,7 +58,7 @@ class BuiltinValueMapperPojoInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("foo.isEnabled() = true", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "read boolean 'true' from object getter with attribute notation" in {
@@ -68,7 +69,7 @@ class BuiltinValueMapperPojoInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("foo.enabled = true", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "read boolean 'false' from object getter with attribute notation" in {
@@ -79,7 +80,7 @@ class BuiltinValueMapperPojoInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("foo.enabled = false", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "read boolean 'true' from object getter" in {
@@ -90,7 +91,7 @@ class BuiltinValueMapperPojoInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("foo.getDisabled() = true", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "read boolean 'true' from object getter attribute notation" in {
@@ -101,7 +102,7 @@ class BuiltinValueMapperPojoInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("foo.disabled = true", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "read string from object 'is...' getter" in {
@@ -112,7 +113,7 @@ class BuiltinValueMapperPojoInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("bar.isFoo() = \"baz\"", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "not read string from object 'is...' getter with attribute notation" in {
@@ -123,6 +124,6 @@ class BuiltinValueMapperPojoInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("bar.foo = \"baz\"", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe false
+      .value shouldBe false
   }
 }

@@ -34,7 +34,7 @@ case class ObjectContext(obj: Any) extends Context {
   private lazy val publicMethodsWithoutArguments = obj.getClass.getMethods
     .filter(method => method.getParameterCount == 0)
 
-  override val variableProvider = new VariableProvider {
+  override val variableProvider: VariableProvider = new VariableProvider {
     override def getVariable(name: String): Option[Any] = {
 
       val fieldForName = publicFields find (field => field.getName == name)
@@ -59,7 +59,7 @@ case class ObjectContext(obj: Any) extends Context {
     }
   }
 
-  override val functionProvider = new FunctionProvider {
+  override val functionProvider: FunctionProvider = new FunctionProvider {
     override def getFunctions(name: String): List[ValFunction] = {
       obj.getClass.getMethods
         .find(method => {

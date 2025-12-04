@@ -25,7 +25,7 @@ import org.scalatest.matchers.should.Matchers
 
 class JavaValueMapperTest extends AnyFlatSpec with Matchers {
 
-  val valueMapper =
+  val valueMapper: ValueMapper.CompositeValueMapper =
     ValueMapper.CompositeValueMapper(List(DefaultValueMapper.instance, new JavaValueMapper()))
 
   "The JavaValueMapper" should "return whole number as java.lang.Long" in {

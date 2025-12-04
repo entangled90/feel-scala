@@ -35,6 +35,7 @@ import org.camunda.feel.{
   stringToLocalDateTime,
   stringToLocalTime,
   stringToNumber,
+  stringToTime,
   stringToYearMonthDuration
 }
 import ujson._
@@ -89,7 +90,7 @@ class ConversionBuiltinFunctions(valueMapper: ValueMapper) {
       )
   }
 
-  def functions = Map(
+  def functions: Map[String, List[ValFunction]] = Map(
     "date"                      -> List(dateFunction, dateFunction3),
     "date and time"             -> List(dateTime, dateTime2),
     "time"                      -> List(timeFunction, timeFunction3, timeFunction4),

@@ -19,12 +19,15 @@ package org.camunda.feel.impl.script
 import org.camunda.feel.impl.parser.FeelParser
 
 import javax.script.ScriptEngineFactory
+import fastparse.Parsed
+import org.camunda.feel.FeelEngine
+import org.camunda.feel.syntaxtree.Exp
 
 class FeelExpressionScriptEngine(val factory: ScriptEngineFactory) extends FeelScriptEngine {
 
-  val eval = (expression: String, context: Map[String, Any]) =>
-    engine.evalExpression(expression, context)
+  val eval: (String, Map[String, Any]) => FeelEngine.EvalExpressionResult =
+    (expression: String, context: Map[String, Any]) => engine.evalExpression(expression, context)
 
-  val parse = (expression: String) => FeelParser.parseExpression(expression)
+  val parse: String => Parsed[Exp] = (expression: String) => FeelParser.parseExpression(expression)
 
 }

@@ -31,7 +31,7 @@ object ValueMapper {
 
   case class CompositeValueMapper(customMappers: List[CustomValueMapper]) extends ValueMapper {
 
-    val customMappersByPriority =
+    val customMappersByPriority: List[CustomValueMapper] =
       (DefaultValueMapper.instance :: customMappers).distinct
         .sortBy(_.priority)(Ordering[Int].reverse)
 
@@ -56,7 +56,7 @@ object ValueMapper {
     }
   }
 
-  val defaultValueMapper = CompositeValueMapper(
+  val defaultValueMapper: CompositeValueMapper = CompositeValueMapper(
     List(DefaultValueMapper.instance)
   )
 

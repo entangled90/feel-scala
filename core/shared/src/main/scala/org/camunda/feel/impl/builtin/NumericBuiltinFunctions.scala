@@ -31,10 +31,11 @@ import org.camunda.feel.syntaxtree.{
 
 import scala.math.BigDecimal.RoundingMode
 import scala.util.Random
+import org.camunda.feel.syntaxtree.ValFunction
 
 object NumericBuiltinFunctions {
 
-  def functions = Map(
+  def functions: Map[String, List[ValFunction]] = Map(
     "decimal"         -> List(decimalFunction, decimalFunction3),
     "floor"           -> List(floorFunction, floorFunction2),
     "ceiling"         -> List(ceilingFunction, ceilingFunction2),
@@ -59,7 +60,7 @@ object NumericBuiltinFunctions {
     }
   )
 
-  def decimalFunction3 = builtinFunction(
+  def decimalFunction3: ValFunction = builtinFunction(
     params = List("n", "scale", "mode"),
     invoke = {
       case List(ValNumber(n), ValNumber(scale), ValString(mode)) if (isRoundingMode(mode)) => {

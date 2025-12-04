@@ -103,7 +103,7 @@ trait FeelScriptEngine
     }
   }
 
-  private def closeSilently(closable: Closeable) {
+  private def closeSilently(closable: Closeable) = {
     try {
       closable.close()
     } catch {

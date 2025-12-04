@@ -19,12 +19,16 @@ package org.camunda.feel.impl.script
 import org.camunda.feel.impl.parser.FeelParser
 
 import javax.script.ScriptEngineFactory
+import org.camunda.feel.api.EvaluationResult
+import org.camunda.feel.FeelEngine.EvalUnaryTestsResult
+import fastparse.Parsed
+import org.camunda.feel.syntaxtree.Exp
 
 class FeelUnaryTestsScriptEngine(val factory: ScriptEngineFactory) extends FeelScriptEngine {
 
-  val eval = (expression: String, context: Map[String, Any]) =>
-    engine.evalUnaryTests(expression, context)
+  val eval: (String, Map[String, Any]) => EvalUnaryTestsResult =
+    (expression: String, context: Map[String, Any]) => engine.evalUnaryTests(expression, context)
 
-  val parse = (expression: String) => FeelParser.parseUnaryTests(expression)
+  val parse: String => Parsed[Exp] = (expression: String) => FeelParser.parseUnaryTests(expression)
 
 }

@@ -25,10 +25,11 @@ import org.camunda.feel.impl.JavaValueMapper
 import org.camunda.feel.valuemapper.ValueMapper.CompositeValueMapper
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.EitherValues
 
-class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
+class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers with EitherValues {
 
-  val engine =
+  val engine: FeelEngine =
     new FeelEngine(null, CompositeValueMapper(List(new JavaValueMapper())))
 
   "The value mapper" should "read java.lang.String" in {
@@ -36,7 +37,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("foo + \"hello\"", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe a[java.lang.String]
+      .value shouldBe a[java.lang.String]
   }
 
   it should "read java.lang.Float" in {
@@ -44,7 +45,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("foo + 1", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe a[java.lang.Double]
+      .value shouldBe a[java.lang.Double]
   }
 
   it should "read java.lang.Double" in {
@@ -52,7 +53,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("foo + 1", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe a[java.lang.Double]
+      .value shouldBe a[java.lang.Double]
   }
 
   it should "read java.lang.Integer" in {
@@ -60,7 +61,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("foo + 1", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe a[java.lang.Long]
+      .value shouldBe a[java.lang.Long]
   }
 
   it should "read java.lang.Long" in {
@@ -68,7 +69,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("foo + 1", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe a[java.lang.Long]
+      .value shouldBe a[java.lang.Long]
   }
 
   it should "read java.lang.Short" in {
@@ -76,7 +77,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("foo + 1", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe a[java.lang.Long]
+      .value shouldBe a[java.lang.Long]
   }
 
   it should "read java.lang.Boolean" in {
@@ -84,7 +85,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("foo or false", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe a[java.lang.Boolean]
+      .value shouldBe a[java.lang.Boolean]
   }
 
   it should "read java.util.Date" in {
@@ -92,7 +93,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("foo", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe a[java.time.LocalDateTime]
+      .value shouldBe a[java.time.LocalDateTime]
   }
 
   it should "read null value" in {
@@ -102,7 +103,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("foo = null", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "read scala string from object getter with attribute notation" in {
@@ -112,7 +113,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("bar.foo = \"baz\"", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "read scala boolean 'true' from object getter" in {
@@ -122,7 +123,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("bar.getEnabled() = true", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "read scala boolean 'true' from object getter with attribute notation" in {
@@ -132,7 +133,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("bar.enabled = true", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "read scala boolean 'false' from object IS getter" in {
@@ -142,7 +143,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("bar.isDisabled = false", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "read scala boolean 'false' from object IS getter with attribute notation" in {
@@ -152,7 +153,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("bar.disabled = false", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "read scala string from object IS getter with attribute notation" in {
@@ -162,7 +163,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("bar.isBaz = \"foo\"", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "not read scala string from object IS getter with attribute notation" in {
@@ -172,7 +173,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
 
     engine
       .evalExpression("bar.baz = \"foo\"", context = Context.StaticContext(variables, null))
-      .getOrElse() shouldBe false
+      .value shouldBe false
   }
 
   it should "read java.util.Map" in {
@@ -189,7 +190,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
         "map.foo = \"myString\" and map.bar = 2 and map.baz.foo = \"bar\"",
         context = Context.StaticContext(variables, null)
       )
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   it should "read java.util.List" in {
@@ -206,7 +207,7 @@ class BuiltinValueMapperInputTest extends AnyFlatSpec with Matchers {
         "list[1] = \"myString\" and list[2] = 2 and list[3].foo = \"bar\"",
         context = Context.StaticContext(variables, null)
       )
-      .getOrElse() shouldBe true
+      .value shouldBe true
   }
 
   class MyScalaType {

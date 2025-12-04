@@ -23,6 +23,7 @@ import java.util.{Base64, UUID}
 import java.nio.charset.StandardCharsets
 import java.util.regex.Pattern
 import scala.util.Try
+import org.camunda.feel.syntaxtree.ValFunction
 
 object StringBuiltinFunctions {
 
@@ -31,7 +32,7 @@ object StringBuiltinFunctions {
     def generate: UUID = UUID.randomUUID()
   }
 
-  def functions = Map(
+  def functions: Map[String, List[ValFunction]] = Map(
     "substring"        -> List(substringFunction, substringFunction3),
     "string length"    -> List(stringLengthFunction),
     "upper case"       -> List(upperCaseFunction),
@@ -241,7 +242,7 @@ object StringBuiltinFunctions {
       Try(Pattern.compile(delimiter))
         .map { pattern =>
           val r = pattern.split(string, -1)
-          ValList(r.map(ValString).toList)
+          ValList(r.map(ValString.apply).toList)
         }
         .recover { _ =>
           ValError(s"Invalid pattern for delimiter '$delimiter'")
@@ -255,7 +256,7 @@ object StringBuiltinFunctions {
     invoke = { case List(ValString(input), ValString(pattern)) =>
       Try(pattern.r)
         .map { regex =>
-          val matches = regex.findAllIn(input).map(ValString)
+          val matches = regex.findAllIn(input).map(ValString.apply)
           ValList(matches.toList)
         }
         .recover { _ =>

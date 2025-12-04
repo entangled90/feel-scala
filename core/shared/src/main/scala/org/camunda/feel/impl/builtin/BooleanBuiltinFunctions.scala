@@ -18,10 +18,11 @@ package org.camunda.feel.impl.builtin
 
 import org.camunda.feel.impl.builtin.BuiltinFunction.builtinFunction
 import org.camunda.feel.syntaxtree.{Val, ValBoolean, ValError, ValNull, ValString}
+import org.camunda.feel.syntaxtree.ValFunction
 
 object BooleanBuiltinFunctions {
 
-  def functions = Map(
+  def functions: Map[String, List[ValFunction]] = Map(
     "not"         -> List(notFunction),
     "is defined"  -> List(isDefinedFunction),
     "get or else" -> List(getOrElse),

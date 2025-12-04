@@ -77,6 +77,6 @@ object FeelScriptEngineFactory {
 
   val LANGUAGE_VERSION = "1.1"
 
-  val EXTENSIONS = List("feel")
+  val EXTENSIONS: List[String] = List("feel")
 
 }

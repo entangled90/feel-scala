@@ -5,7 +5,7 @@ lazy val installJS = taskKey[Unit]("Compile JS and copy to feel-playground/vendo
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 val sharedSettings = Seq(
-  scalaVersion      := "2.13.18",
+  scalaVersion      := "2.13.14",
   name              := "core",
   scalacOptions ++= Seq("-Xsource:3"),
   libraryDependencies ++= Seq(
@@ -68,7 +68,7 @@ lazy val cli = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .withoutSuffixFor(JVMPlatform)
   .dependsOn(core)
   .settings(
-    scalaVersion := "2.13.18",
+    scalaVersion := "2.13.16",
     name         := "cli",
     libraryDependencies ++= Seq(
       "com.github.alexarchambault" %%% "case-app"  % "2.1.0",

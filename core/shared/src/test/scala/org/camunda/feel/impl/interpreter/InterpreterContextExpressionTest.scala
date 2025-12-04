@@ -216,7 +216,7 @@ class InterpreterContextExpressionTest
     ) should returnResult(4)
 
     evaluateExpression(
-      expression = """{\uD83D\uDC0E:"\uD83D\uDE00"}.`\uD83D\uDC0E`"""
+      expression = "{\uD83D\uDC0E:\"\uD83D\uDE00\"}.`\uD83D\uDC0E`"
     ) should returnResult("\uD83D\uDE00")
 
     evaluateExpression(

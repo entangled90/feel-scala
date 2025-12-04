@@ -46,7 +46,7 @@ object FeelWhitespace {
   }
 
   implicit object whitespace extends Whitespace {
-    def apply(ctx: ParsingRun[_]) = {
+    def apply(ctx: ParsingRun[_]): ParsingRun[Unit] = {
       val input                                                    = ctx.input
       @tailrec def rec(current: Int, state: Int): ParsingRun[Unit] = {
         if (!input.isReachable(current)) {

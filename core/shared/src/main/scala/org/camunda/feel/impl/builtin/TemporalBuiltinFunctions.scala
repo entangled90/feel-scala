@@ -35,7 +35,7 @@ import java.util.Locale
 
 class TemporalBuiltinFunctions(clock: FeelEngineClock) {
 
-  def functions = Map(
+  def functions: Map[String, List[ValFunction]] = Map(
     "now"               -> List(nowFunction),
     "today"             -> List(todayFunction),
     "day of year"       -> List(dateTimeFunction(getDayOfYear)),

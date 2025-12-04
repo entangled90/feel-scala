@@ -107,8 +107,8 @@ class CustomContextTest
     }
 
     val myCustomContext = new CustomContext {
-      override val variableProvider = myVariableProvider
-      override val functionProvider = myFunctionProvider
+      override val variableProvider                   = myVariableProvider
+      override val functionProvider: FunctionProvider = myFunctionProvider
     }
 
     evaluateExpression(
@@ -124,7 +124,7 @@ class CustomContextTest
     val variables: Map[String, _] = Map("foo" -> 7)
 
     val context: CustomContext = new CustomContext {
-      override val variableProvider = SimpleTestContext(variables)
+      override val variableProvider: VariableProvider = SimpleTestContext(variables)
     }
 
     evaluateExpression(
@@ -137,7 +137,7 @@ class CustomContextTest
     val variables: Map[String, _] = Map()
 
     val context: CustomContext = new CustomContext {
-      override val variableProvider = SimpleTestContext(variables)
+      override val variableProvider: VariableProvider = SimpleTestContext(variables)
     }
 
     evaluateExpression(
@@ -146,7 +146,7 @@ class CustomContextTest
     ) should returnNull()
   }
 
-  val inputVariableContext = StaticVariableProvider(
+  val inputVariableContext: StaticVariableProvider = StaticVariableProvider(
     Map(
       UnaryTests.inputVariable -> "myInputVariable"
     )
@@ -156,7 +156,7 @@ class CustomContextTest
     val variables: Map[String, _] = Map("myInputVariable" -> 8, "foo" -> 7)
 
     val context: CustomContext = new CustomContext {
-      override val variableProvider =
+      override val variableProvider: VariableProvider =
         VariableProvider.CompositeVariableProvider(
           List(inputVariableContext, SimpleTestContext(variables))
         )
@@ -169,7 +169,7 @@ class CustomContextTest
     val variables: Map[String, _] = Map("foo" -> 7)
 
     val context: CustomContext = new CustomContext {
-      override val variableProvider =
+      override val variableProvider: VariableProvider =
         VariableProvider.CompositeVariableProvider(
           List(inputVariableContext, SimpleTestContext(variables))
         )

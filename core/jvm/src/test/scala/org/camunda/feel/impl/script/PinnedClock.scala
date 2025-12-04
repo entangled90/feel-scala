@@ -27,6 +27,6 @@ class PinnedClock extends FeelEngineClock {
 
 object PinnedClock {
 
-  var currentTime = ZonedDateTime.now()
+  var currentTime: ZonedDateTime = ZonedDateTime.now()
 
 }

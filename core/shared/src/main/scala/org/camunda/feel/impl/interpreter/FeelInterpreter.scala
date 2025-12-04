@@ -75,7 +75,7 @@ class FeelInterpreter(private val valueMapper: ValueMapper) {
           { case (ctx, (key, value)) =>
             eval(value)(context.merge(ctx)).toEither.map(v => ctx.add(key -> v))
           },
-          ValContext
+          ValContext.apply
         )
 
       case range: ConstRange => toRange(range)
@@ -84,15 +84,15 @@ class FeelInterpreter(private val valueMapper: ValueMapper) {
       case InputEqualTo(x)                              =>
         withVal(getImplicitInputValue, i => checkEquality(i, eval(x)))
       case InputLessThan(x)                             =>
-        withVal(getImplicitInputValue, i => dualOp(i, eval(x), _ < _, ValBoolean))
+        withVal(getImplicitInputValue, i => dualOp(i, eval(x), _ < _, ValBoolean.apply))
       case InputLessOrEqual(x)                          =>
-        withVal(getImplicitInputValue, i => dualOp(i, eval(x), _ <= _, ValBoolean))
+        withVal(getImplicitInputValue, i => dualOp(i, eval(x), _ <= _, ValBoolean.apply))
       case InputGreaterThan(x)                          =>
-        withVal(getImplicitInputValue, i => dualOp(i, eval(x), _ > _, ValBoolean))
+        withVal(getImplicitInputValue, i => dualOp(i, eval(x), _ > _, ValBoolean.apply))
       case InputGreaterOrEqual(x)                       =>
-        withVal(getImplicitInputValue, i => dualOp(i, eval(x), _ >= _, ValBoolean))
+        withVal(getImplicitInputValue, i => dualOp(i, eval(x), _ >= _, ValBoolean.apply))
       case InputInRange(range @ ConstRange(start, end)) =>
-        unaryOpDual(eval(start.value), eval(end.value), isInRange(range), ValBoolean)
+        unaryOpDual(eval(start.value), eval(end.value), isInRange(range), ValBoolean.apply)
 
       case UnaryTestExpression(x) => unaryTestExpression(x)
 
@@ -121,16 +121,16 @@ class FeelInterpreter(private val valueMapper: ValueMapper) {
 
       // dual comparators
       case Equal(x, y)          => checkEquality(eval(x), eval(y))
-      case LessThan(x, y)       => dualOp(eval(x), eval(y), _ < _, ValBoolean)
-      case LessOrEqual(x, y)    => dualOp(eval(x), eval(y), _ <= _, ValBoolean)
-      case GreaterThan(x, y)    => dualOp(eval(x), eval(y), _ > _, ValBoolean)
-      case GreaterOrEqual(x, y) => dualOp(eval(x), eval(y), _ >= _, ValBoolean)
+      case LessThan(x, y)       => dualOp(eval(x), eval(y), _ < _, ValBoolean.apply)
+      case LessOrEqual(x, y)    => dualOp(eval(x), eval(y), _ <= _, ValBoolean.apply)
+      case GreaterThan(x, y)    => dualOp(eval(x), eval(y), _ > _, ValBoolean.apply)
+      case GreaterOrEqual(x, y) => dualOp(eval(x), eval(y), _ >= _, ValBoolean.apply)
 
       // combinators
-      case AtLeastOne(xs)    => atLeastOne(xs, ValBoolean)
+      case AtLeastOne(xs)    => atLeastOne(xs, ValBoolean.apply)
       case Not(x)            => withBooleanOrNull(eval(x), x => ValBoolean(!x))
-      case Disjunction(x, y) => atLeastOne(x :: y :: Nil, ValBoolean)
-      case Conjunction(x, y) => all(x :: y :: Nil, ValBoolean)
+      case Disjunction(x, y) => atLeastOne(x :: y :: Nil, ValBoolean.apply)
+      case Conjunction(x, y) => all(x :: y :: Nil, ValBoolean.apply)
 
       // control structures
       case If(condition, statement, elseStatement) =>
@@ -180,7 +180,7 @@ class FeelInterpreter(private val valueMapper: ValueMapper) {
             p =>
               atLeastOneValue(
                 p.map(vars => () => eval(condition)(context.addAll(vars))),
-                ValBoolean
+                ValBoolean.apply
               )
           )
         )
@@ -188,7 +188,11 @@ class FeelInterpreter(private val valueMapper: ValueMapper) {
         withValOrNull(
           withCartesianProduct(
             iterators,
-            p => allValues(p.map(vars => () => eval(condition)(context.addAll(vars))), ValBoolean)
+            p =>
+              allValues(
+                p.map(vars => () => eval(condition)(context.addAll(vars))),
+                ValBoolean.apply
+              )
           )
         )
       case For(iterators, exp)             =>
@@ -240,7 +244,7 @@ class FeelInterpreter(private val valueMapper: ValueMapper) {
             } else {
               (x to y).by(-1)
             }
-            ValList(range.map(ValNumber))
+            ValList(range.map(ValNumber.apply))
           }
         )
 

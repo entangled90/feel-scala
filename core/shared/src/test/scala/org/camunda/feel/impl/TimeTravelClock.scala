@@ -26,7 +26,7 @@ class TimeTravelClock extends FeelEngineClock {
 
   private var provider: () => ZonedDateTime = () => systemClock.getCurrentTime
 
-  def currentTime(currentTime: ZonedDateTime) {
+  def currentTime(currentTime: ZonedDateTime): Unit = {
     provider = () => currentTime
   }
 

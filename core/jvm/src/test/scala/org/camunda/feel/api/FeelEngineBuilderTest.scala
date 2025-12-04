@@ -18,8 +18,9 @@ package org.camunda.feel.api
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.EitherValues
 
-class FeelEngineBuilderTest extends AnyFlatSpec with Matchers {
+class FeelEngineBuilderTest extends AnyFlatSpec with Matchers with EitherValues {
 
   "The FeelEngineBuilder" should "be usable from Java" in {
     val javaBuilder = new FeelEngineBuilderJava()
@@ -33,6 +34,6 @@ class FeelEngineBuilderTest extends AnyFlatSpec with Matchers {
 
     val evaluationResult = engine.evaluateExpression("[1,2]")
 
-    evaluationResult.result shouldBe a[java.util.List[Integer]]
+    evaluationResult.result shouldBe a[java.util.List[?]]
   }
 }
