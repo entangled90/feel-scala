@@ -7,6 +7,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 val sharedSettings = Seq(
   scalaVersion      := "2.13.18",
   name              := "core",
+  scalacOptions ++= Seq("-Xsource:3"),
   libraryDependencies ++= Seq(
     "com.lihaoyi"       %%% "fastparse"            % "3.1.1",
     "org.scala-js"       %% "scalajs-stubs"        % "1.1.0",
