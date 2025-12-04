@@ -19,6 +19,7 @@ package org.camunda.feel.impl
 import org.camunda.feel.{
   Date,
   DateTime,
+  Number,
   DayTimeDuration,
   LocalDateTime,
   LocalTime,
@@ -61,11 +62,11 @@ class DefaultValueMapper extends CustomValueMapper {
     case null   => Some(ValNull)
 
     // scala types
-    case x: Short                               => Some(ValNumber(x))
+    case x: Short                               => Some(ValNumber(BigDecimal(x)))
     case x: Int                                 => Some(ValNumber(x))
     case x: Long                                => Some(ValNumber(x))
     case x: Float if (x.isNaN || x.isInfinity)  => Some(ValNull)
-    case x: Float                               => Some(ValNumber(x))
+    case x: Float                               => Some(ValNumber(BigDecimal(x)))
     case x: Double if (x.isNaN || x.isInfinity) => Some(ValNull)
     case x: Double                              => Some(ValNumber(x))
     case x: BigDecimal                          => Some(ValNumber(x))

@@ -5,9 +5,8 @@ lazy val installJS = taskKey[Unit]("Compile JS and copy to feel-playground/vendo
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 val sharedSettings = Seq(
-  scalaVersion      := "2.13.14",
+  scalaVersion      := "3.3.5",
   name              := "core",
-  scalacOptions ++= Seq("-Xsource:3"),
   libraryDependencies ++= Seq(
     "com.lihaoyi"       %%% "fastparse"            % "3.1.1",
     "org.scala-js"       %% "scalajs-stubs"        % "1.1.0",
@@ -32,12 +31,10 @@ lazy val core      = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   )
   .jsSettings(
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-java-securerandom" % "1.0.0"
+      ("org.scala-js" %%% "scalajs-java-securerandom" % "1.0.0").cross(CrossVersion.for3Use2_13)
     ),
     scalaJSLinkerConfig ~= {
       _.withESFeatures(_.withESVersion(ESVersion.ES2018))
-        .withClosureCompilerIfAvailable(true)
-        .withMinify(false)
         .withModuleKind(ModuleKind.CommonJSModule)
     },
     installJS := {
@@ -67,12 +64,11 @@ lazy val cli = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .crossType(CrossType.Full)
   .withoutSuffixFor(JVMPlatform)
   .dependsOn(core)
+  .settings(name := "cli")
+  .settings(sharedSettings)
   .settings(
-    scalaVersion := "2.13.16",
-    name         := "cli",
     libraryDependencies ++= Seq(
-      "com.github.alexarchambault" %%% "case-app"  % "2.1.0",
-      "org.scalatest"              %%% "scalatest" % "3.2.19" % Test
+      "com.github.alexarchambault" %%% "case-app" % "2.1.0"
     )
   )
   .jsSettings(

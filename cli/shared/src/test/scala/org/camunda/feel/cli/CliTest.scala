@@ -28,14 +28,16 @@ class CliTest extends AnyFunSuite with Matchers {
         val filteredResults = results.filter { case (expr, _) =>
           expr.trim.nonEmpty && !expr.startsWith("#")
         }
-        filteredResults(0)._2 shouldBe Right("2")           // 1 + 1
-        filteredResults(1)._2 shouldBe Right("6")           // 2 * 3
-        filteredResults(2)._2 shouldBe Right("true")        // 5 > 3
+        filteredResults(0)._2 shouldBe Right("2")               // 1 + 1
+        filteredResults(1)._2 shouldBe Right("6")               // 2 * 3
+        filteredResults(2)._2 shouldBe Right("true")            // 5 > 3
         filteredResults(3)._2 shouldBe Right("\"hello world\"") // "hello" + " " + "world"
-        filteredResults(4)._2 shouldBe Right("null")        // x + y (no context)
-        filteredResults(5)._2 shouldBe Right("null") // price * quantity (no context)
-        filteredResults(6)._2 shouldBe Right("[1, 2, 3]") // price * quantity (no context)
-        filteredResults(7)._2 shouldBe Right("{a:[2, 4, 6, 8, 10], b:[2, 4, 6, 8, 10]}") // price * quantity (no context)
+        filteredResults(4)._2 shouldBe Right("null")            // x + y (no context)
+        filteredResults(5)._2 shouldBe Right("null")            // price * quantity (no context)
+        filteredResults(6)._2 shouldBe Right("[1, 2, 3]")       // price * quantity (no context)
+        filteredResults(7)._2 shouldBe Right(
+          "{a:[2, 4, 6, 8, 10], b:[2, 4, 6, 8, 10]}"
+        ) // price * quantity (no context)
       case Left(error)    => fail(s"File evaluation failed: $error")
     }
   }
@@ -49,11 +51,11 @@ class CliTest extends AnyFunSuite with Matchers {
         val filteredResults = results.filter { case (expr, _) =>
           expr.trim.nonEmpty && !expr.startsWith("#")
         }
-        filteredResults(0)._2 shouldBe Right("2")           // 1 + 1
-        filteredResults(1)._2 shouldBe Right("6")           // 2 * 3
-        filteredResults(2)._2 shouldBe Right("true")        // 5 > 3
-        filteredResults(3)._2 shouldBe Right("hello world") // "hello" + " " + "world"
-        filteredResults(4)._2 shouldBe Right("30")          // x + y
+        filteredResults(0)._2 shouldBe Right("2")               // 1 + 1
+        filteredResults(1)._2 shouldBe Right("6")               // 2 * 3
+        filteredResults(2)._2 shouldBe Right("true")            // 5 > 3
+        filteredResults(3)._2 shouldBe Right("\"hello world\"") // "hello" + " " + "world"
+        filteredResults(4)._2 shouldBe Right("30")              // x + y
         filteredResults(5)._2 shouldBe Right("16.5") // price * quantity
       case Left(error)    => fail(s"File evaluation failed: $error")
     }

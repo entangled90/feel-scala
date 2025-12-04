@@ -28,9 +28,7 @@ import org.camunda.feel.syntaxtree.ValFunction
 object StringBuiltinFunctions {
 
   // FIXME
-  private lazy val generator = new {
-    def generate: UUID = UUID.randomUUID()
-  }
+  def generate: UUID = UUID.randomUUID()
 
   def functions: Map[String, List[ValFunction]] = Map(
     "substring"        -> List(substringFunction, substringFunction3),
@@ -278,7 +276,7 @@ object StringBuiltinFunctions {
     builtinFunction(
       params = List(),
       invoke = { case List() =>
-        ValString(generator.generate.toString)
+        ValString(generate.toString)
       }
     )
 

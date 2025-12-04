@@ -40,6 +40,7 @@ class InterpreterInterruptionTest extends AnyFlatSpec with Matchers with FeelEng
           evaluateExpression(
             expression = "count(for x in 1..(2 ** 16) return {\"power\": 2 ** x}) > 0"
           )
+          ()
         } catch {
           case _: InterruptedException =>
             countDownLatch.countDown()

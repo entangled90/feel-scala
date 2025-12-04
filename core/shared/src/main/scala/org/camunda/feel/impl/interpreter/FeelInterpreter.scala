@@ -66,7 +66,7 @@ class FeelInterpreter(private val valueMapper: ValueMapper) {
       case ConstDayTimeDuration(d)   => ValDayTimeDuration(d)
 
       case ConstList(items) =>
-        mapEither[Exp, Val](items, item => eval(item).toEither, ValList)
+        mapEither[Exp, Val](items, item => eval(item).toEither, ValList.apply)
 
       case ConstContext(entries) =>
         foldEither[(String, Exp), EvalContext](

@@ -5,3 +5,5 @@
 "hello" + " " + "world"
 x + y
 price * quantity
+[1,2,3]
+{a: for i in 1..5 return 2*i, b: for i in 1..5 return 2*i }

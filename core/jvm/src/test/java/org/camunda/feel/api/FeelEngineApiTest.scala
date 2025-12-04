@@ -214,7 +214,7 @@ class FeelEngineApiTest extends AnyFlatSpec with Matchers with EitherValues {
     val evaluationResult =
       javaEngine.evaluateExpression("1 + x", java.util.Collections.singletonMap("x", 2))
 
-    evaluationResult.getResult shouldBe 3
+    evaluationResult.getResult shouldEqual 3
 
     evaluationResult.getSuppressedFailures shouldBe empty
   }

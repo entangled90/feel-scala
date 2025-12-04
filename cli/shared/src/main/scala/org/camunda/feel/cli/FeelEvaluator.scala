@@ -2,7 +2,7 @@ package org.camunda.feel.cli
 
 import org.camunda.feel.api.{FeelEngineApi, FeelEngineBuilder}
 import org.camunda.feel.impl.DefaultValueMapper
-import org.camunda.feel.syntaxtree.{Val, ValList}
+import org.camunda.feel.syntaxtree.{Val, ValList, ValString}
 import org.camunda.feel.valuemapper.CustomValueMapper
 
 import scala.io.Source
@@ -11,7 +11,11 @@ import java.io.File
 /** Shared FEEL expression evaluation logic */
 object FeelEvaluator {
 
-  private lazy val engine: FeelEngineApi = FeelEngineBuilder.create().withCustomValueMapper(DefaultValueMapper.instance).withCustomValueMapper(StringValueMapper).build()
+  private lazy val engine: FeelEngineApi = FeelEngineBuilder
+    .create()
+    .withCustomValueMapper(DefaultValueMapper.instance)
+    .withCustomValueMapper(StringValueMapper)
+    .build()
 
   /** Convert ujson.Value to Map[String, Any] */
   private def jsonToMap(value: ujson.Value): Map[String, Any] = {
@@ -98,14 +102,16 @@ object FeelEvaluator {
     }
   }
 
-  object StringValueMapper extends CustomValueMapper{
+  object StringValueMapper extends CustomValueMapper {
 
-    override def toVal(x: Any, innerValueMapper: Any => Val): Option[Val] =None
+    override def toVal(x: Any, innerValueMapper: Any => Val): Option[Val] = None
 
-    override def unpackVal(value: Val, innerValueMapper: Val => Any): Option[Any] = value match{
+    override def unpackVal(value: Val, innerValueMapper: Val => Any): Option[Any] = value match {
       case ValList(seq) =>
-        Some(seq.map(innerValueMapper).mkString("[",", ","]"))
-      case other =>
+        Some(seq.map(innerValueMapper).mkString("[", ", ", "]"))
+      case ValString(s) =>
+        Some(s"\"$s\"")
+      case other        =>
         Some(other.toString)
 
     }
